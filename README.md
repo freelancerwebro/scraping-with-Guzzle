@@ -1,4 +1,4 @@
-# Scraping with Guzzle & DownCrawler
+# Scraping with Guzzle & DomCrawler
 
 Practice some scraping techniques using Guzzle and DomCrawler
 
