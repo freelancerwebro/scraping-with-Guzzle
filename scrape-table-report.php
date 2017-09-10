@@ -34,10 +34,10 @@ $table = $crawler->filter('#case_table > table')->filter('tr')->each(function ($
 
 array_shift($table);
 
-print_r($table);
 
 $year = null;
 $quarter = null;
+$missingCells = [];
 $totalSizeOfRow = 2 * $totalProducts + 2;
 
 foreach($table as $row)
@@ -89,7 +89,48 @@ function prepareRow($year, $quarter, $row)
 		}
 	}
 
+	if(sizeof($row) == $totalSizeOfRow -1)
+	{
+		$array = $row;
+		array_shift($array);
+		array_pop($array);
 
+		$dashPosition = array_search('-', $array);
+
+		array_splice( $array, $dashPosition, 0, "-" );
+
+		$productNo = 1;
+		for($i = 1; $i < sizeof($array); $i++)
+		{	
+
+			$result['product_'.$productNo]['items'] = $array[$i-1];
+			$result['product_'.$productNo]['amount'] = $array[$i];
+
+			if($i % 2 == 1)
+				$productNo++;
+		}
+	}
+
+	if(sizeof($row) == $totalSizeOfRow -2)
+	{	
+		$array = $row;
+		array_shift($array);
+		array_pop($array);
+
+		$productNo = 1;
+		for($i = 0; $i < sizeof($array); $i++)
+		{	
+			if($productNo > $totalProducts)
+				continue;
+
+			$result['product_'.$productNo]['items'] = $array[$i-1];
+			$result['product_'.$productNo]['amount'] = $array[$i];
+
+			if($i % 2 == 1)
+				$productNo++;
+		}
+
+	}
 
 	return $result;
 }
