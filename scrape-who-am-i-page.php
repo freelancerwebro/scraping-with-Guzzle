@@ -6,10 +6,6 @@ use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 
-$products = [];
-$discounted_products = [];
-$best_price_products = [];
-
 $client = new Client();
 
 $response = $client->request('GET', 'http://testing-ground.scraping.pro/whoami',[
@@ -17,8 +13,6 @@ $response = $client->request('GET', 'http://testing-ground.scraping.pro/whoami',
 		'Referer' => 'http://testing-ground.scraping.pro'
 	]
 ]);
-
-$_SERVER['HTTP_REFERER'] = "Facebook";
 
 $body = $response->getBody()->getContents();
 
